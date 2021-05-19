@@ -30,8 +30,7 @@ public class GithubProvider {
         String body = response.body();
 
         if (ObjectUtil.isNotEmpty(body)) {
-            String token = body.split("&")[0].split("=")[1];
-            result = token;
+            result = body.split("&")[0].split("=")[1];
         }
 
         return result;
@@ -48,8 +47,7 @@ public class GithubProvider {
         String body = response.body();
 
         if (ObjectUtil.isNotEmpty(body)) {
-            GithubUser githubUser = JSON.parseObject(body, GithubUser.class);
-            return githubUser;
+            return JSON.parseObject(body, GithubUser.class);
         }
 
         return null;

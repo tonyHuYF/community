@@ -7,7 +7,6 @@ import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,8 +20,8 @@ public class DruidConfig {
      * 配置druid后台监听，配置管理后台Servlet
      */
     @Bean
-    public ServletRegistrationBean druidServlet() {
-        ServletRegistrationBean bean = new ServletRegistrationBean(new StatViewServlet(), "/druid/*");
+    public ServletRegistrationBean<StatViewServlet> druidServlet() {
+        ServletRegistrationBean<StatViewServlet> bean = new ServletRegistrationBean<>(new StatViewServlet(), "/druid/*");
         Map<String, String> initParam = new HashMap<>();
         //druid后台用户名
         initParam.put("loginUsername", "admin");
@@ -41,13 +40,13 @@ public class DruidConfig {
      * 配置监听的filter
      */
     @Bean
-    public FilterRegistrationBean druidStatFilter() {
-        FilterRegistrationBean bean = new FilterRegistrationBean();
+    public FilterRegistrationBean<WebStatFilter> druidStatFilter() {
+        FilterRegistrationBean<WebStatFilter> bean = new FilterRegistrationBean<>();
         bean.setFilter(new WebStatFilter());
         Map<String, String> initParam = new HashMap<>();
         initParam.put("exclusions", "*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*");
         bean.setInitParameters(initParam);
-        bean.setUrlPatterns(Arrays.asList("/*"));
+        bean.addUrlPatterns("/*");
         return bean;
     }
 

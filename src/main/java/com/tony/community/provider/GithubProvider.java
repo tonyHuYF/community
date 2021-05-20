@@ -4,8 +4,8 @@ import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.http.HttpResponse;
 import cn.hutool.http.HttpUtil;
 import com.alibaba.fastjson.JSON;
-import com.tony.community.domain.AccessToken;
-import com.tony.community.domain.GithubUser;
+import com.tony.community.domain.vo.AccessToken;
+import com.tony.community.domain.vo.GithubUser;
 import org.springframework.stereotype.Component;
 
 /**

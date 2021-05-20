@@ -1,4 +1,4 @@
-package com.tony.community.domain;
+package com.tony.community.domain.vo;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

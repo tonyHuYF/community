@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
+import java.util.UUID;
 
 /**
  * 登录验证
@@ -37,9 +39,8 @@ public class AuthorizeController {
     private UserService userService;
 
     @GetMapping("/callback")
-    public String callback(@RequestParam(name = "code") String code,
-                           @RequestParam(name = "state") String state,
-                           HttpServletRequest request) {
+    public String callback(@RequestParam(name = "code") String code, @RequestParam(name = "state") String state,
+                           HttpServletResponse response) {
 
         AccessToken accessToken = new AccessToken();
         accessToken.setClient_id(clientId);
@@ -51,18 +52,20 @@ public class AuthorizeController {
         GithubUser user = githubProvider.getUser(accessTokenStr);
 
         if (ObjectUtil.isNotEmpty(user)) {
-            //登录成功，把user塞进session
-            request.getSession().setAttribute("user", user);
-
             //插入user到user表
+            String token = UUID.randomUUID().toString();
+
             User userData = new User();
             userData.setAccountId(user.getId());
             userData.setName(user.getName());
-            userData.setToken(accessTokenStr);
+            userData.setToken(token);
             userData.setBio(user.getBio());
             userData.setAvatarUrl(user.getAvatarUrl());
 
             userService.insert(userData);
+
+            //将token插入到cookie中
+            response.addCookie(new Cookie("token", token));
 
         } else {
             //登录失败，重新登录

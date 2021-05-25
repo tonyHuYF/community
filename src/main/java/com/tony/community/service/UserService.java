@@ -27,11 +27,37 @@ public class UserService {
     }
 
     /**
+     * 删除
+     */
+    public void delete(String id) {
+        QueryWrapper<User> wrapper = new QueryWrapper<>();
+        wrapper.lambda().eq(User::getAccountId, id);
+        userMapper.delete(wrapper);
+    }
+
+    /**
+     * 修改
+     */
+    public User update(User user){
+        userMapper.updateById(user);
+        return user;
+    }
+
+    /**
      * 根据token获取user
      */
     public User queryByToken(String token) {
         QueryWrapper<User> wrapper = new QueryWrapper<>();
         wrapper.lambda().eq(User::getToken, token);
+        return userMapper.selectOne(wrapper);
+    }
+
+    /**
+     * 根据账户Id获取user
+     */
+    public User queryByAccountId(String id) {
+        QueryWrapper<User> wrapper = new QueryWrapper<>();
+        wrapper.lambda().eq(User::getAccountId, id);
         return userMapper.selectOne(wrapper);
     }
 

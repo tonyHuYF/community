@@ -1,25 +1,16 @@
-package com.tony.community.domain;
+package com.tony.community.domain.vo;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
+import com.tony.community.domain.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.io.Serializable;
 import java.util.Date;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class Question implements Serializable {
-
-    private static final long serialVersionUID = 7307727403708948874L;
-    /**
-     * id
-     */
-    @TableId(type = IdType.UUID)
-    private String id;
+@AllArgsConstructor
+public class QuestionVo {
     /**
      * 标题
      */
@@ -33,7 +24,7 @@ public class Question implements Serializable {
      */
     private String tag;
     /**
-     * 作者(账户ID)
+     * 作者
      */
     private String creator;
     /**
@@ -56,5 +47,8 @@ public class Question implements Serializable {
      * 更新时间
      */
     private Date updateTime;
+    /**
+     * 关联的User
+     */
+    private User user;
 }
-

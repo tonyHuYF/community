@@ -52,6 +52,9 @@ public class AuthorizeController {
         GithubUser user = githubProvider.getUser(accessTokenStr);
 
         if (ObjectUtil.isNotEmpty(user)) {
+            //先删除旧数据
+            userService.delete(user.getId());
+
             //插入user到user表
             String token = UUID.randomUUID().toString();
 

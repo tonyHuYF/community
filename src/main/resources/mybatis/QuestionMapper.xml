@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tony.community.mapper.QuestionMapper">
+
+    <select id="queryList"
+            resultType="com.tony.community.domain.vo.QuestionVo">
+        SELECT title,
+               description,
+               tag,
+               creator,
+               view_count    viewCount,
+               comment_count commentCount,
+               like_count    likeCount,
+               create_time   createTime,
+               update_time   updateTime
+        from question
+        order by createTime desc
+    </select>
+
+</mapper>

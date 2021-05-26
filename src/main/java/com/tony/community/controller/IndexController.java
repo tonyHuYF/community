@@ -2,18 +2,20 @@ package com.tony.community.controller;
 
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.tony.community.domain.User;
+import com.tony.community.domain.vo.PaginationVo;
 import com.tony.community.domain.vo.QuestionVo;
 import com.tony.community.service.QuestionService;
 import com.tony.community.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 
 /**
  * 登录首页
@@ -27,7 +29,8 @@ public class IndexController {
     private QuestionService questionService;
 
     @GetMapping("/")
-    public String index(HttpServletRequest request, Model model) {
+    public String index(HttpServletRequest request, Model model, @RequestParam(name = "page", defaultValue = "1") Integer page,
+                        @RequestParam(name = "size", defaultValue = "2") Integer size) {
         Cookie[] cookies = request.getCookies();
         if (ObjectUtil.isNotEmpty(cookies)) {
             for (Cookie data : cookies) {
@@ -41,8 +44,9 @@ public class IndexController {
                 }
             }
         }
-        List<QuestionVo> list = questionService.list();
-        model.addAttribute("questions", list);
+        PaginationVo<QuestionVo> pagination = questionService.list(new Page<>(page, size));
+        model.addAttribute("pagination", pagination);
+
         return "index";
     }
 }

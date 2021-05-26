@@ -1,16 +1,16 @@
 package com.tony.community.service;
 
-import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.tony.community.domain.Question;
 import com.tony.community.domain.User;
+import com.tony.community.domain.vo.PaginationVo;
 import com.tony.community.domain.vo.QuestionVo;
 import com.tony.community.mapper.QuestionMapper;
 import com.tony.community.mapper.UserMapper;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -31,23 +31,23 @@ public class QuestionService {
     }
 
     /**
-     * 列表查询
+     * 列表查询--分页
      */
-    public List<QuestionVo> list() {
-        List<QuestionVo> result = new ArrayList<>();
-        QueryWrapper<Question> questionWrapper = new QueryWrapper<>();
-        questionWrapper.lambda().orderByDesc(Question::getCreateTime);
-        List<Question> questions = questionMapper.selectList(questionWrapper);
+    public PaginationVo<QuestionVo> list(IPage<Question> page) {
+        Integer total = questionMapper.selectCount(new QueryWrapper<>());
+        IPage<QuestionVo> questionPage = questionMapper.queryList(page);
 
         List<User> users = userMapper.selectList(new QueryWrapper<>());
         Map<String, User> userMap = users.stream().collect(Collectors.toMap(k -> k.getAccountId(), v -> v));
 
-        questions.forEach(p -> {
-            QuestionVo temp = new QuestionVo();
-            BeanUtil.copyProperties(p, temp);
-            temp.setUser(userMap.get(p.getCreator()));
-            result.add(temp);
-        });
+        questionPage.getRecords().forEach(p -> p.setUser(userMap.get(p.getCreator())));
+
+
+        Integer totalPage = total % (int) page.getSize() == 0 ? total / (int) page.getSize() : total / (int) page.getSize() + 1;
+
+        PaginationVo<QuestionVo> result = new PaginationVo();
+        result.setPagination(totalPage, (int) page.getCurrent());
+        result.setData(questionPage.getRecords());
 
         return result;
     }

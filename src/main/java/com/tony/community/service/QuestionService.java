@@ -34,7 +34,6 @@ public class QuestionService {
      * 列表查询--分页
      */
     public PaginationVo<QuestionVo> list(IPage<Question> page) {
-        Integer total = questionMapper.selectCount(new QueryWrapper<>());
         IPage<QuestionVo> questionPage = questionMapper.queryList(page);
 
         List<User> users = userMapper.selectList(new QueryWrapper<>());
@@ -42,6 +41,7 @@ public class QuestionService {
 
         questionPage.getRecords().forEach(p -> p.setUser(userMap.get(p.getCreator())));
 
+        Integer total = (int) questionPage.getTotal();
 
         Integer totalPage = total % (int) page.getSize() == 0 ? total / (int) page.getSize() : total / (int) page.getSize() + 1;
 

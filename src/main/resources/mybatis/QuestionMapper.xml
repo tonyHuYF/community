@@ -18,4 +18,21 @@
         order by createTime desc
     </select>
 
+    <select id="queryListByUser" parameterType="java.lang.String"
+            resultType="com.tony.community.domain.vo.QuestionVo">
+        SELECT title,
+               description,
+               tag,
+               creator,
+               view_count    viewCount,
+               comment_count commentCount,
+               like_count    likeCount,
+               create_time   createTime,
+               update_time   updateTime
+        from question
+        where creator = #{user}
+        order by createTime desc
+    </select>
+
+
 </mapper>

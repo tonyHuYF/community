@@ -37,18 +37,43 @@ public class QuestionService {
         IPage<QuestionVo> questionPage = questionMapper.queryList(page);
 
         List<User> users = userMapper.selectList(new QueryWrapper<>());
-        Map<String, User> userMap = users.stream().collect(Collectors.toMap(k -> k.getAccountId(), v -> v));
+        Map<String, User> userMap = users.stream().collect(Collectors.toMap(User::getAccountId, v -> v));
 
         questionPage.getRecords().forEach(p -> p.setUser(userMap.get(p.getCreator())));
 
-        Integer total = (int) questionPage.getTotal();
+        int total = (int) questionPage.getTotal();
 
         Integer totalPage = total % (int) page.getSize() == 0 ? total / (int) page.getSize() : total / (int) page.getSize() + 1;
 
-        PaginationVo<QuestionVo> result = new PaginationVo();
+        PaginationVo<QuestionVo> result = new PaginationVo<>();
         result.setPagination(totalPage, (int) page.getCurrent());
         result.setData(questionPage.getRecords());
 
         return result;
     }
+
+
+    /**
+     * 根据发布者列表查询--分页
+     */
+    public PaginationVo<QuestionVo> listByUser(IPage<Question> page,User user) {
+        IPage<QuestionVo> questionPage = questionMapper.queryListByUser(page,user.getAccountId());
+
+        List<User> users = userMapper.selectList(new QueryWrapper<>());
+        Map<String, User> userMap = users.stream().collect(Collectors.toMap(User::getAccountId, v -> v));
+
+        questionPage.getRecords().forEach(p -> p.setUser(userMap.get(p.getCreator())));
+
+        int total = (int) questionPage.getTotal();
+
+        Integer totalPage = total % (int) page.getSize() == 0 ? total / (int) page.getSize() : total / (int) page.getSize() + 1;
+
+        PaginationVo<QuestionVo> result = new PaginationVo<>();
+        result.setPagination(totalPage, (int) page.getCurrent());
+        result.setData(questionPage.getRecords());
+
+        return result;
+    }
+
+
 }

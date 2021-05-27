@@ -18,6 +18,9 @@ public class QuestionController {
     public String question(@PathVariable(name = "id") String id, Model model) {
         QuestionVo questionVo = questionService.queryById(id);
         model.addAttribute("question", questionVo);
+
+        //累加阅读数
+        questionService.updateInc(id);
         return "question";
     }
 }

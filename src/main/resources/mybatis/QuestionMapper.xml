@@ -5,7 +5,8 @@
 
     <select id="queryList"
             resultType="com.tony.community.domain.vo.QuestionVo">
-        SELECT id,title,
+        SELECT id,
+               title,
                description,
                tag,
                creator,
@@ -20,7 +21,8 @@
 
     <select id="queryListByUser" parameterType="java.lang.String"
             resultType="com.tony.community.domain.vo.QuestionVo">
-        SELECT id,title,
+        SELECT id,
+               title,
                description,
                tag,
                creator,
@@ -33,6 +35,12 @@
         where creator = #{user}
         order by createTime desc
     </select>
+
+    <update id="updateViewCount" parameterType="java.lang.String">
+        update question
+        set view_count=view_count + 1
+        where id = #{id}
+    </update>
 
 
 </mapper>

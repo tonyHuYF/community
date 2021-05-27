@@ -95,7 +95,7 @@ public class QuestionService {
     public QuestionVo queryById(String id) {
         QuestionVo result = new QuestionVo();
         Question question = questionMapper.selectById(id);
-        if(ObjectUtil.isEmpty(question)){
+        if (ObjectUtil.isEmpty(question)) {
             throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
         }
         BeanUtil.copyProperties(question, result);
@@ -115,6 +115,14 @@ public class QuestionService {
             insert(question);
         }
         return question;
+    }
+
+
+    /**
+     * 累加阅读数
+     */
+    public void updateInc(String id) {
+        questionMapper.updateViewCount(id);
     }
 
 

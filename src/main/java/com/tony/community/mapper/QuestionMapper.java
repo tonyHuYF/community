@@ -19,4 +19,8 @@ public interface QuestionMapper extends BaseMapper<Question> {
      */
     IPage<QuestionVo> queryListByUser(IPage<Question> page, @Param("user") String user);
 
+    /**
+     * 累加阅读数
+     */
+    void updateViewCount(@Param("id")String id);
 }

@@ -12,6 +12,11 @@ import java.util.Date;
 @AllArgsConstructor
 public class QuestionVo {
     /**
+     * id
+     */
+    private String id;
+
+    /**
      * 标题
      */
     private String title;

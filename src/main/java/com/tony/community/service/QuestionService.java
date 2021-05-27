@@ -1,5 +1,6 @@
 package com.tony.community.service;
 
+import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.tony.community.domain.Question;
@@ -56,8 +57,8 @@ public class QuestionService {
     /**
      * 根据发布者列表查询--分页
      */
-    public PaginationVo<QuestionVo> listByUser(IPage<Question> page,User user) {
-        IPage<QuestionVo> questionPage = questionMapper.queryListByUser(page,user.getAccountId());
+    public PaginationVo<QuestionVo> listByUser(IPage<Question> page, User user) {
+        IPage<QuestionVo> questionPage = questionMapper.queryListByUser(page, user.getAccountId());
 
         List<User> users = userMapper.selectList(new QueryWrapper<>());
         Map<String, User> userMap = users.stream().collect(Collectors.toMap(User::getAccountId, v -> v));
@@ -72,6 +73,19 @@ public class QuestionService {
         result.setPagination(totalPage, (int) page.getCurrent());
         result.setData(questionPage.getRecords());
 
+        return result;
+    }
+
+    /**
+     * 根据id查询
+     */
+    public QuestionVo queryById(String id) {
+        QuestionVo result = new QuestionVo();
+        Question question = questionMapper.selectById(id);
+        BeanUtil.copyProperties(question, result);
+        List<User> users = userMapper.selectList(new QueryWrapper<>());
+        Map<String, User> userMap = users.stream().collect(Collectors.toMap(User::getAccountId, v -> v));
+        result.setUser(userMap.get(result.getCreator()));
         return result;
     }
 

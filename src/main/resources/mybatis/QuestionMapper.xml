@@ -5,7 +5,7 @@
 
     <select id="queryList"
             resultType="com.tony.community.domain.vo.QuestionVo">
-        SELECT title,
+        SELECT id,title,
                description,
                tag,
                creator,
@@ -20,7 +20,7 @@
 
     <select id="queryListByUser" parameterType="java.lang.String"
             resultType="com.tony.community.domain.vo.QuestionVo">
-        SELECT title,
+        SELECT id,title,
                description,
                tag,
                creator,

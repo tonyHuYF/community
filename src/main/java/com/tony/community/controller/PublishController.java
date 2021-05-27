@@ -3,10 +3,12 @@ package com.tony.community.controller;
 import cn.hutool.core.util.ObjectUtil;
 import com.tony.community.domain.Question;
 import com.tony.community.domain.User;
+import com.tony.community.domain.vo.QuestionVo;
 import com.tony.community.service.QuestionService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.thymeleaf.util.StringUtils;
@@ -24,6 +26,16 @@ public class PublishController {
 
     @GetMapping("/publish")
     public String publish() {
+        return "publish";
+    }
+
+    @GetMapping("/publish/{id}")
+    public String edit(@PathVariable(name = "id") String id, Model model) {
+        QuestionVo question = questionService.queryById(id);
+        model.addAttribute("title", question.getTitle());
+        model.addAttribute("description", question.getDescription());
+        model.addAttribute("tag", question.getTag());
+        model.addAttribute("id", question.getId());
         return "publish";
     }
 

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="zh-CN">
+<head>
+    <meta http-equiv="content-type" content="text/html" charset="UTF-8">
+    <title th:text="出错页面"></title>
+    <link rel="stylesheet" href="/community/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/community/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="/community/css/community.css">
+    <script src="/community/js/jquery-3.4.1.min.js"></script>
+    <script src="/community/js/bootstrap.min.js"></script>
+
+</head>
+<body>
+<div th:insert="~{navigation :: nav}"></div>
+
+<div class="container-fluid main profile">
+    <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12"><h1>出错啦！！！</h1>
+        <p th:text="${message}">服务太热啦，要不然稍等下再来试试~</p>
+        <p><a class="btn btn-primary btn-lg" href="/community" role="button">回到主页</a></p>
+    </div>
+</div>
+
+
+</body>
+</html>

@@ -9,6 +9,8 @@ import com.tony.community.domain.Question;
 import com.tony.community.domain.User;
 import com.tony.community.domain.vo.PaginationVo;
 import com.tony.community.domain.vo.QuestionVo;
+import com.tony.community.exception.CustomizeErrorCode;
+import com.tony.community.exception.CustomizeException;
 import com.tony.community.mapper.QuestionMapper;
 import com.tony.community.mapper.UserMapper;
 import org.springframework.stereotype.Service;
@@ -93,6 +95,9 @@ public class QuestionService {
     public QuestionVo queryById(String id) {
         QuestionVo result = new QuestionVo();
         Question question = questionMapper.selectById(id);
+        if(ObjectUtil.isEmpty(question)){
+            throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
+        }
         BeanUtil.copyProperties(question, result);
         List<User> users = userMapper.selectList(new QueryWrapper<>());
         Map<String, User> userMap = users.stream().collect(Collectors.toMap(User::getAccountId, v -> v));

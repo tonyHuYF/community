@@ -41,7 +41,9 @@ public class PublishController {
 
     @PostMapping("/publish")
     public String doPublish(@RequestParam(name = "title") String title, @RequestParam(name = "description") String description,
-                            @RequestParam(name = "tag") String tag, HttpServletRequest request, Model model) {
+                            @RequestParam(name = "tag") String tag,
+                            @RequestParam(name = "id") String id,
+                            HttpServletRequest request, Model model) {
 
         User user = (User) request.getSession().getAttribute("user");
         if (ObjectUtil.isEmpty(user)) {
@@ -77,7 +79,8 @@ public class PublishController {
         question.setDescription(description);
         question.setTag(tag);
         question.setCreator(user.getAccountId());
-        questionService.insert(question);
+        question.setId(id);
+        questionService.createOrUpdate(question);
 
         return "redirect:/";
     }

@@ -1,6 +1,8 @@
 package com.tony.community.service;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.tony.community.domain.Question;
@@ -28,6 +30,15 @@ public class QuestionService {
      */
     public Question insert(Question question) {
         questionMapper.insert(question);
+        return question;
+    }
+
+    /**
+     * 更新
+     */
+    public Question update(Question question) {
+        question.setUpdateTime(DateUtil.date());
+        questionMapper.updateById(question);
         return question;
     }
 
@@ -87,6 +98,18 @@ public class QuestionService {
         Map<String, User> userMap = users.stream().collect(Collectors.toMap(User::getAccountId, v -> v));
         result.setUser(userMap.get(result.getCreator()));
         return result;
+    }
+
+    /**
+     * 更新或者插入
+     */
+    public Question createOrUpdate(Question question) {
+        if (ObjectUtil.isNotEmpty(question.getId())) {
+            update(question);
+        } else {
+            insert(question);
+        }
+        return question;
     }
 
 

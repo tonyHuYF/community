@@ -23,4 +23,9 @@ public interface QuestionMapper extends BaseMapper<Question> {
      * 累加阅读数
      */
     void updateViewCount(@Param("id")String id);
+
+    /**
+     * 累加回复数
+     */
+    void updateCommentCount(@Param("id")String id);
 }

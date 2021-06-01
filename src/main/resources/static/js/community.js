@@ -14,7 +14,7 @@ function post() {
         }),
         success: function (response) {
             if (response.code == 200) {
-                $("comment_content").hide();
+                $("#comment_section").hide();
             } else {
                 alert(response.message);
             }

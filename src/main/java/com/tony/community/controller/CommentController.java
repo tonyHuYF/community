@@ -35,6 +35,7 @@ public class CommentController {
 
         Comment comment = new Comment();
         BeanUtil.copyProperties(commentVo, comment);
+        comment.setCommentator(user.getAccountId());
         commentService.insert(comment);
         return ResultBean.okOf();
     }

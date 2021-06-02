@@ -39,6 +39,7 @@ public class CommentService {
 
         QueryWrapper<Comment> commentWrapper = new QueryWrapper<>();
         commentWrapper.lambda().eq(Comment::getParentId, id);
+        commentWrapper.lambda().orderByDesc(Comment::getCreateTime);
         List<Comment> comments = commentMapper.selectList(commentWrapper);
 
         List<User> users = userMapper.selectList(new QueryWrapper<>());

@@ -14,7 +14,7 @@ function post() {
         }),
         success: function (response) {
             if (response.code == 200) {
-                $("#comment_section").hide();
+               window.location.reload();
             } else {
                 alert(response.message);
             }

@@ -2,6 +2,7 @@ package com.tony.community.controller;
 
 import com.tony.community.domain.vo.CommentVo;
 import com.tony.community.domain.vo.QuestionVo;
+import com.tony.community.enums.CommentTypeEnum;
 import com.tony.community.service.CommentService;
 import com.tony.community.service.QuestionService;
 import org.springframework.stereotype.Controller;
@@ -22,9 +23,9 @@ public class QuestionController {
     @GetMapping("/question/{id}")
     public String question(@PathVariable(name = "id") String id, Model model) {
         QuestionVo questionVo = questionService.queryById(id);
-        List<CommentVo> commentVos = commentService.queryByParentId(questionVo.getId());
+        List<CommentVo> commentVos = commentService.queryByParentId(questionVo.getId(), CommentTypeEnum.QUESTION);
         model.addAttribute("question", questionVo);
-        model.addAttribute("comments",commentVos);
+        model.addAttribute("comments", commentVos);
 
         //累加阅读数
         questionService.updateInc(id);

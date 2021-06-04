@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.tony.community.domain.Comment;
 import com.tony.community.domain.User;
 import com.tony.community.domain.vo.CommentVo;
+import com.tony.community.enums.CommentTypeEnum;
 import com.tony.community.mapper.CommentMapper;
 import com.tony.community.mapper.QuestionMapper;
 import com.tony.community.mapper.UserMapper;
@@ -34,11 +35,12 @@ public class CommentService {
         return comment;
     }
 
-    public List<CommentVo> queryByParentId(String id) {
+    public List<CommentVo> queryByParentId(String id, CommentTypeEnum type) {
         List<CommentVo> result = new ArrayList<>();
 
         QueryWrapper<Comment> commentWrapper = new QueryWrapper<>();
         commentWrapper.lambda().eq(Comment::getParentId, id);
+        commentWrapper.lambda().eq(Comment::getType, type.getType());
         commentWrapper.lambda().orderByDesc(Comment::getCreateTime);
         List<Comment> comments = commentMapper.selectList(commentWrapper);
 
@@ -54,4 +56,5 @@ public class CommentService {
 
         return result;
     }
+
 }

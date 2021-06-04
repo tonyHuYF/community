@@ -6,15 +6,15 @@ import com.tony.community.domain.Comment;
 import com.tony.community.domain.User;
 import com.tony.community.domain.vo.CommentVo;
 import com.tony.community.domain.vo.ResultBean;
+import com.tony.community.enums.CommentTypeEnum;
 import com.tony.community.exception.CustomizeErrorCode;
 import com.tony.community.service.CommentService;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @Controller
 public class CommentController {
@@ -38,5 +38,13 @@ public class CommentController {
         comment.setCommentator(user.getAccountId());
         commentService.insert(comment);
         return ResultBean.okOf();
+    }
+
+    @GetMapping("/comment/{id}")
+    @ResponseBody
+    public ResultBean<List<CommentVo>> comments(@PathVariable("id") String id) {
+        List<CommentVo> commentVos = commentService.queryByParentId(id, CommentTypeEnum.COMMENT);
+        return ResultBean.okOf(commentVos);
+
     }
 }

@@ -58,8 +58,12 @@
                             <div th:text="${comment.content}"></div>
                             <div class="menu">
                                 <span class="glyphicon glyphicon-thumbs-up icon"></span>
-                                <span class="glyphicon glyphicon-comment icon" th:data-id="${comment.id}"
-                                      onclick="collapseComments(this)"></span>
+                                <span th:data-id="${comment.id}"
+                                      onclick="collapseComments(this)">
+                                              <span class="glyphicon glyphicon-comment icon" ></span>
+                                    <span th:text="${comment.commentCount}"></span>
+                                </span>
+
                                 <span class="pull-right"
                                       th:text="${#dates.format(comment.createTime,'yyyy-MM-dd HH:mm')}"></span>
                             </div>

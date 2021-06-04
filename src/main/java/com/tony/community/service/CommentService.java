@@ -30,8 +30,15 @@ public class CommentService {
     @Transactional
     public Comment insert(Comment comment) {
         commentMapper.insert(comment);
-        //回复加一
-        questionMapper.updateCommentCount(comment.getParentId());
+
+        if (comment.getType() == 1) {
+            //回复加一
+            questionMapper.updateCommentCount(comment.getParentId());
+        } else {
+            //二级评论回复加一
+            commentMapper.updateCommentCount(comment.getParentId());
+        }
+
         return comment;
     }
 

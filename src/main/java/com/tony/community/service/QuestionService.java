@@ -16,6 +16,8 @@ import com.tony.community.mapper.UserMapper;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -125,5 +127,35 @@ public class QuestionService {
         questionMapper.updateViewCount(id);
     }
 
+
+    /**
+     * 根据标签查询
+     */
+    public List<QuestionVo> queryRelated(String id) {
+        List<QuestionVo> result = new ArrayList<>();
+
+        QuestionVo questionVo = queryById(id);
+        //tag
+        String[] tags = questionVo.getTag().split(",");
+        List<String> tagList = Arrays.asList(tags);
+
+        QueryWrapper<Question> wrapper = new QueryWrapper();
+        wrapper.lambda().ne(Question::getId, id);
+        wrapper.lambda().in(Question::getTag, tagList);
+
+        List<Question> questions = questionMapper.selectList(wrapper);
+
+        List<User> users = userMapper.selectList(new QueryWrapper<>());
+        Map<String, User> userMap = users.stream().collect(Collectors.toMap(User::getAccountId, v -> v));
+
+        questions.forEach(p -> {
+            QuestionVo temp = new QuestionVo();
+            BeanUtil.copyProperties(p, temp);
+            temp.setUser(userMap.get(temp.getCreator()));
+            result.add(temp);
+        });
+
+        return result;
+    }
 
 }
